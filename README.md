@@ -165,3 +165,15 @@ Files:
 - unseen/HARNESS_CONFIRMED_UNSEEN_3.json -- the harness report (sha256 e483bd1330c4fe603c076921cfb8f6d42a272ad8e8007415edaee2bfe890c00a)
 
 The harness report resolved_ids field lists all three. Requires Docker and Python 3.10+ (Linux/WSL).
+
+### Important qualifier — PASSES BUT DIFFERS (added after verification)
+
+All 3 held-out patches are RESOLVED by the official SWE-bench harness (they pass FAIL_TO_PASS and PASS_TO_PASS). On inspection with check_resolution, all 3 are PASSES BUT DIFFERS: they pass the tests but do NOT reproduce the maintainers' fixes.
+
+- django-11179: same function (Collector.delete), different edit.
+- django-11265: changed a DIFFERENT function than gold (we changed Query.names_to_path; gold changed Query.split_exclude, Query.trim_start).
+- django-11299: changed a DIFFERENT function than gold (we changed _get_col; gold changed Query._add_q).
+
+"Resolved" in SWE-bench means the tests pass. Because 2 of 3 patches modify different functions than the maintainers' fix, whether these are genuine alternative fixes or test-passing artifacts requires further inspection. This is test-pass verification, NOT gold-match.
+
+Patch synthesis was deterministic (edit-algebra branch transform), not LLM-generated. Target localization: model-proposed for 11179; deterministic fallback for 11265 and 11299.
