@@ -128,3 +128,40 @@ The harness report is the maintainers' output and is independent of Aethelgard. 
 ---
 
 *Prepared as a re-verifiable evidence record. The five-instance harness confirmation is real and independent. Unseen-bug results are in progress and will be published when independently confirmed.*
+
+
+---
+
+## Unseen-instance results (added 2026-09-25)
+
+**Three Aethelgard-generated patches on unseen django instances were independently confirmed by the official SWE-bench harness.**
+
+| Instance | Repository | Harness verdict |
+|---|---|---|
+| django__django-11179 | django/django | RESOLVED |
+| django__django-11265 | django/django | RESOLVED |
+| django__django-11299 | django/django | RESOLVED |
+
+Result: 3 submitted, 3 resolved, 0 errors -- graded by the maintainers' code (swebench harness, SWE-bench_Verified, Docker).
+
+### Why these are "unseen"
+
+The 3 instances were drawn from a pre-registered, hashed sample of 30 clean django instances. The pre-registration (unseen/GRAMMAR_SEARCH_PREREG.md, sha256 20b3ea270c92ce1c2223a31dfe9ebc3f3886bfab4184a04d62dc441b8fd3d3d9) fixed the candidate pool, deterministic selection, N=30, eligibility criterion, and stopping rule before any run. The pool (unseen/candidate_pool_raw.json) is 145 clean django instances, all excluded from development and prior benchmarks. All 3 resolved instances are confirmed in that clean pool -- never touched during development. This distinguishes them from the 5 in-sample patches above.
+
+### Scope -- stated precisely
+
+- 3 of 30 attempted. The other 27 did not resolve (timeouts, search-gaps, no-target proposed). This is a resolution rate on this sample, NOT a benchmark leaderboard score.
+- This is autonomous repair, not recursive self-improvement (RSI). The same 30-instance run produced 0 grammar gaps (the self-improvement cycle trigger), so that cycle was never exercised. These 3 are the repair pipeline resolving unseen bugs; RSI remains untested on real instances.
+- A separate earlier frozen sample (9 instances) resolved 0. These are different pre-registered samples; both are reported honestly.
+
+### Reproduce
+
+pip install swebench, then run the official harness:
+
+  python -m swebench.harness.run_evaluation --dataset_name princeton-nlp/SWE-bench_Verified --predictions_path unseen/rsi_unseen_3_predictions.jsonl --run_id verify --max_workers 3
+
+Files:
+- unseen/rsi_unseen_3_predictions.jsonl -- the 3 patches (sha256 8cc3d04c87055f5bd90a61556060e8851bf1092c8fc595b62ced21f3d3cce61f)
+- unseen/HARNESS_CONFIRMED_UNSEEN_3.json -- the harness report (sha256 e483bd1330c4fe603c076921cfb8f6d42a272ad8e8007415edaee2bfe890c00a)
+
+The harness report resolved_ids field lists all three. Requires Docker and Python 3.10+ (Linux/WSL).
