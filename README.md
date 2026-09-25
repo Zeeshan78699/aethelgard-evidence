@@ -177,3 +177,29 @@ All 3 held-out patches are RESOLVED by the official SWE-bench harness (they pass
 "Resolved" in SWE-bench means the tests pass. Because 2 of 3 patches modify different functions than the maintainers' fix, whether these are genuine alternative fixes or test-passing artifacts requires further inspection. This is test-pass verification, NOT gold-match.
 
 Patch synthesis was deterministic (edit-algebra branch transform), not LLM-generated. Target localization: model-proposed for 11179; deterministic fallback for 11265 and 11299.
+
+### CORRECTION 2026-09-25 — per-patch inspection (supersedes all earlier repair counts)
+
+After inspecting every harness-"RESOLVED" patch with check_resolution and by hand, the honest result:
+
+CONFIRMED GENUINE REPAIRS (3) — GOLD-MATCH, identical AST to the maintainers' fixes:
+- astropy__astropy-12907
+- astropy__astropy-13236
+- astropy__astropy-14539
+
+RETRACTED — test-passing artifacts (pass the tests but do NOT fix the described bug;
+they delete, short-circuit, or override the responsible code):
+- astropy__astropy-14309 (in-sample): published patch bails out on falsy origin; bug remains for truthy origin.
+- django__django-11179 (held-out): deletes the fast-delete branch.
+- django__django-11265 (held-out): deletes the MultiJoin raise.
+- django__django-11299 (held-out): makes _get_col unconditional (dead code / regression).
+
+NOT COUNTED AS GENUINE — PASSES-BUT-DIFFERS, equivalence not established as gold-match:
+- django__django-14559: passes the tests (incl. the multi-batch test_large_batch) but differs from the maintainers' fix in code; not claimed as a confirmed genuine repair.
+
+All of the above are harness-"RESOLVED" (their tests pass). Harness-RESOLVED means the tests
+pass; it does NOT mean the bug was genuinely fixed. GOLD-MATCH / patch inspection is the reliable
+bar. This correction supersedes every earlier "5 in-sample" and "3 held-out" repair claim in this
+repository.
+
+HONEST RESULT: 3 confirmed genuine repairs (astropy-12907, 13236, 14539).
