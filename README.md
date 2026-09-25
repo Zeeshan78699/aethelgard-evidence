@@ -1,3 +1,5 @@
+> **CORRECTION (2026-09-25):** Earlier repair counts in this file are superseded. Honest result after per-patch inspection: **3 confirmed genuine repairs (astropy-12907, 13236, 14539).** Four other harness-"RESOLVED" patches (astropy-14309 + django-11179/11265/11299) are test-passing artifacts and are retracted; django-14559 is passes-but-differs (not counted). See the CORRECTION section below.
+
 # Aethelgard — Evidence Record
 
 **Independent verification of Aethelgard-generated patches via the official SWE-bench harness, and the state of the project's benchmark work.**
